@@ -2,6 +2,7 @@ package com.linkedin.javacodechallenges;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,19 @@ public class StoreItem {
 
   public static Optional<StoreItem> findLeastExpensive(Collection<StoreItem> items) {
     // TODO: Implement
-    return Optional.empty();
+    if(items.isEmpty()) return Optional.empty();
+    
+    StoreItem leastExpensiveItem = null;
+    double minVal = Double.MAX_VALUE; //leastExpensiveItem.getRetailPrice() - (leastExpensiveItem.getRetailPrice() * leastExpensiveItem.getDiscount());
+    for(StoreItem item : items) {
+      double val = item.getRetailPrice() - (item.getRetailPrice() * item.getDiscount());
+      if(val < minVal) {
+        minVal = val;
+        leastExpensiveItem = item;
+      }
+    }
+
+    return Optional.of(leastExpensiveItem);
   }
 
   @Override

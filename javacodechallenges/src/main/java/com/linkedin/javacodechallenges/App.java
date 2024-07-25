@@ -1,5 +1,7 @@
 package com.linkedin.javacodechallenges;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -7,8 +9,29 @@ public class App {
     public static List<String> findStudentsWithIncompleteVolunteerEvents(
             List<String> students,
             Map<String, List<String>> attendeesMapping) {
-        // TODO: implement function
-        return List.of();
+                Map<String, Integer> studentToEventCountMap = new HashMap<>();
+                HashSet<String> duplicateStudents = new HashSet<>();
+                attendeesMapping.entrySet().stream().forEach(entrySet -> {
+                        duplicateStudents.clear();
+                        entrySet.getValue().stream().forEach(student -> {
+                                if(!duplicateStudents.contains(student)) {
+                                        Integer count = studentToEventCountMap.get(student);
+                                        if (count == null) {
+                                                studentToEventCountMap.put(student, 1);
+                                        } else {
+                                                studentToEventCountMap.put(student, count + 1);
+                                        }
+                                }
+                        duplicateStudents.add(student); 
+                        });
+
+                });
+
+        return students.stream().filter(student -> {
+                Integer count = studentToEventCountMap.get(student);
+                if (count == null || count < 2) return true;
+                return false;
+        }).toList();
     }
 
     public static void main(String[] args) {
